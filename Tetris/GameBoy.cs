@@ -3,21 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Tetris
 {
-    class GameBoy  
+    abstract class GameBoy  
     {
         public int[,] Area { get; set; }  //Поле
         public int Score { get; protected set; }    //Очки
         public int Level { get; protected set; }    //Уровень сложности
         public int Width { get; private set; }      //Ширина
         public int Height { get; private set; }     //Высота
-
+        protected IFigureFactory FigureFactory { get; set; }    //Фабрика фигур
+        protected FigureController figureController { get; set; }   //Управление фигурами
         protected List<Figure> Figures { get; set; }
+        protected DataGridView dataGridView1 { get; set; }
 
-        public GameBoy(int height, int width)
+        public GameBoy(int height, int width, DataGridView dataGridView)
         {
+            Figures = new List<Figure>();
+            dataGridView1 = dataGridView;
+
+            figureController = new FigureController(this);  //Наши фигуры могут двигаться
             Area = new int[height, width];
             Height = height;
             Width = width;
@@ -37,6 +44,6 @@ namespace Tetris
             }
         }
 
-        //public abstract void Control(int key);
+        public abstract void Control(int key);
     }
 }

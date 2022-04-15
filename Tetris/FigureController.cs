@@ -23,22 +23,26 @@ namespace Tetris
             {
                 for (int j = 0; j < figure.N; j++)
                 {
-                    if (!(ft + Top + i >= 0 && 
-                        ft + Top + i < gameBoy.Height && 
-                        fl + Left + j >= 0 && 
-                        fl + Left + j < gameBoy.Width
-                        ))
-                         return -1;
+                    if (figure.Array[i, j, layer] != 0) //Если у фигуры пустота
+                    {
+                        if (!(ft + Top + i >= 0 &&  //Проверяем на выход из массива
+                            ft + Top + i < gameBoy.Height &&
+                            fl + Left + j >= 0 &&
+                            fl + Left + j < gameBoy.Width
+                            ))
+                            return -1;
 
-                    //Если в фигуре не пустая клетка и в гейм бое не пустая клетка
-                    if (figure.Array[i, j, layer] != 0 &&
-                       gameBoy.Area[ft + Top, fl + Left] != 0 &&
-                       gameBoy.Area[ft + Top, fl + Left] != figure.Array[i, j, layer]
-                       )
-                        return gameBoy.Area[ft + Top, fl + Left];
+                        //Если в фигуре не пустая клетка и в гейм бое не пустая клетка
+                        if (gameBoy.Area[ft + i + Top, fl + j + Left] != 0 &&   //Если есть препятствие
+                            gameBoy.Area[ft + i +Top, fl + j + Left] != figure.Array[i, j, layer]   //и оно не фигура
+                            )
+                        {
+                            return gameBoy.Area[ft + i + Top, fl + j + Left];   //Возвращает значение той фигуры в которую мы врезались 
+                        }
+                    }
                 }
             }
-            return 0;
+            return 0;   //Можем подвинуть фигуру
         }
         public void Move(Figure figure, int Left, int Top)
         {
@@ -50,19 +54,21 @@ namespace Tetris
             {
                 for (int j = 0; j < figure.N; j++)
                 {
-                    if(gameBoy.Area[i+ft,j+fl] == figure.Array[i,j,layer]
+                    if (figure.Array[i, j, layer] != 0)
+                        if (gameBoy.Area[i+ft,j+fl] == figure.Array[i,j,layer]
                         && figure.Array[i, j, layer]!= 0)
-                    gameBoy.Area[i + ft, j + fl] = 0;
+                    gameBoy.Area[i + ft, j + fl] = 0; //Удаляем предыдущее положение массива
                 }
             }
-            figure.Left += Left;
+            figure.Left += Left;    //Двигаем фигуру куда хотели
             figure.Top += Top;
             
             for (int i = 0; i < figure.N; i++)
             {
                 for (int j = 0; j < figure.N; j++)
                 {
-                    gameBoy.Area[i + figure.Top, j + figure.Left] = figure.Array[i,j,layer];
+                    if(figure.Array[i,j,layer] != 0)
+                    gameBoy.Area[i + figure.Top, j + figure.Left] = figure.Array[i,j,layer]; //Заного отрисовали подвинутую фигуру
                 }
             }
         }

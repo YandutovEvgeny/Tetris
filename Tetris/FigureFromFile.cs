@@ -23,6 +23,7 @@ namespace Tetris
             for(int i= 0;i<count - 1;i++)
                 Rotate(buffer, n, i);
 
+            fileStream.Close(); //Закрываем поток
             return new Figure(buffer, n, count);
         }
 

@@ -9,35 +9,26 @@ namespace Tetris
 {
     public partial class Form1 : Form
     {
-        Figure figure;
-        int count = 0;
         GameBoy gameBoy;
-        FigureController figureController;
         public Form1()
         {
             InitializeComponent();
-            IFigureCreator figureFromFile = new FigureFromFile();
-            figure = figureFromFile.CreateFigure("C:\\Users\\Admin\\TFigure.txt");
+            gameBoy = new GameBoyTetris(dataGridView1);
+            dataGridView1.RowCount = gameBoy.Height;
+            dataGridView1.ColumnCount = gameBoy.Width;
 
-            gameBoy = new GameBoy(10, 10);
-            figureController = new FigureController(gameBoy);
-            dataGridView1.RowCount = 10;
-            dataGridView1.ColumnCount = 10;
-
-            for (int i = 0; i < 10; i++)
-            {
+            for (int i = 0; i < gameBoy.Height; i++)
                 dataGridView1.Rows[i].Height = 20;
+
+            for (int i = 0; i < gameBoy.Width; i++)
                 dataGridView1.Columns[i].Width = 20;
-            }
-            figure.Left = 3;
-            figure.Top = 3;
         }
 
         void ShowGrid()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < gameBoy.Height; i++)
             {
-                for (int j = 0; j < 10; j++)
+                for (int j = 0; j < gameBoy.Width; j++)
                 {
                     if (gameBoy.Area[i, j] == -1)
                         dataGridView1[j, i].Style.BackColor = Color.Black;
@@ -49,47 +40,18 @@ namespace Tetris
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void dataGridView1_KeyDown(object sender, KeyEventArgs e)
         {
-            string result = "";
-            for (int i = 0; i < figure.N; i++)
-            {
-                for (int j = 0; j < figure.N; j++)
-                {
-                    result += figure.Array[i, j, figure.Layer].ToString();
-                }
-                result += "\n";
-            }
-            figure.NextLayer();
-            MessageBox.Show(result);
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            if (figureController.CanMove(figure, 0, -1) == 0)
-                figureController.Move(figure, 0, -1);
-            ShowGrid();
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            if (figureController.CanMove(figure, 0, 1) == 0)
-                figureController.Move(figure, 0, 1);
-            ShowGrid();
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            if (figureController.CanMove(figure, -1, 0) == 0)
-                figureController.Move(figure, -1, 0);
-            ShowGrid();
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            if (figureController.CanMove(figure, 1, 0) == 0)
-                figureController.Move(figure, 1, 0);
-            ShowGrid();
+            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.W)
+                gameBoy.Control(1);
+            if (e.KeyCode == Keys.Down || e.KeyCode == Keys.S)
+                gameBoy.Control(2);
+            if (e.KeyCode == Keys.Right || e.KeyCode == Keys.D)
+                gameBoy.Control(3);
+            if (e.KeyCode == Keys.Left || e.KeyCode == Keys.A)
+                gameBoy.Control(4);
+            
+            dataGridView1.ClearSelection();
         }
     }
 }
