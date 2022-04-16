@@ -7,16 +7,18 @@ namespace Tetris
         List<Figure> figures;
         IFigureCreator figureFromFile;
 
-        //TODO:Добавить больше фигур
+        //TODO:Добавить больше фигур DONE
         public FigureFactoryTetris()
         {
             figureFromFile = new FigureFromFile();
             figures = new List<Figure>()
             {
                 //Создаём фигуры
-                figureFromFile.CreateFigure("C:\\Users\\Admin\\TFigure.txt"),    //T-фигура
-                figureFromFile.CreateFigure("C:\\Users\\Admin\\LFigure.txt"),    //L-фигура
-                figureFromFile.CreateFigure("C:\\Users\\Admin\\StickFigure.txt") //Палочка
+                figureFromFile.CreateFigure("C:\\Users\\Admin\\Figures\\TFigure.txt"),     //T-фигура
+                figureFromFile.CreateFigure("C:\\Users\\Admin\\Figures\\LFigure.txt"),     //L-фигура
+                figureFromFile.CreateFigure("C:\\Users\\Admin\\Figures\\StickFigure.txt"), //Палочка
+                figureFromFile.CreateFigure("C:\\Users\\Admin\\Figures\\ZFigure.txt"),     //Z-фигура
+                figureFromFile.CreateFigure("C:\\Users\\Admin\\Figures\\Square.txt")       //Квадрат
             };
         }
 
