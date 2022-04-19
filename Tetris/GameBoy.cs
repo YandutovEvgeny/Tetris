@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Tetris
 {
-    abstract class GameBoy  
+    abstract class GameBoy
     {
         public int[,] Area { get; set; }  //Поле
         public int Score { get; protected set; }    //Очки
@@ -18,11 +18,13 @@ namespace Tetris
         protected FigureController figureController { get; set; }   //Управление фигурами
         protected List<Figure> Figures { get; set; }
         protected DataGridView dataGridView1 { get; set; }
+        public Timer timer { get; set; }
 
         public GameBoy(int height, int width, DataGridView dataGridView)
         {
             Figures = new List<Figure>();
             dataGridView1 = dataGridView;
+            timer = new Timer();
 
             figureController = new FigureController(this);  //Наши фигуры могут двигаться
             Area = new int[height, width];
@@ -45,5 +47,7 @@ namespace Tetris
         }
 
         public abstract void Control(int key);
+        public abstract void StartGame();
+        public abstract void PauseGame();
     }
 }
